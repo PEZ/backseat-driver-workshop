@@ -1,0 +1,102 @@
+{
+    "title": "Activate Slide Mode",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j s",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/activate!)"
+  },
+  {
+    "title": "Deactivate Slide Mode",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j ctrl+alt+s",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/deactivate!)"
+  },
+  {
+    "title": "Show Markdown Preview",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j ctrl+alt+m",
+    "command": "markdown.showPreview"
+  },
+  {
+    "title": "Next Slide",
+    "category": "Next-slide",
+    "key": "right",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/next! true)",
+    "when": "next-slide:active && !inputFocus"
+  },
+  {
+    "title": "Previous Slide",
+    "category": "Next-slide",
+    "key": "left",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/next! false)",
+    "when": "next-slide:active && !inputFocus"
+  },
+  {
+    "title": "Next Slide",
+    "category": "Next-slide",
+    "key": "pagedown",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/next! true)",
+    "when": "next-slide:active"
+  },
+  {
+    "title": "Previous Slide",
+    "category": "Next-slide",
+    "key": "pageup",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/next! false)",
+    "when": "next-slide:active"
+  },
+  {
+    "title": "Enter Zen Mode",
+    "category": "Next-slide",
+    "key": "F5",
+    "command": "workbench.action.toggleZenMode",
+    "when": "next-slide:active && !inZenMode"
+  },
+  {
+    "title": "Show Current Slide",
+    "category": "Next-slide",
+    "key": "F5",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/current!)",
+    "when": "next-slide:active && inZenMode"
+  },
+  {
+    "title": "Restart Presentation",
+    "category": "Next-slide",
+    "key": "ctrl+alt+cmd+left",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/restart!)"
+  },
+  {
+    "title": "Prepare Speaker Notes",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j ctrl+n",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide-notes/prepare!)"
+  },
+  {
+    "title": "Edit Active Note",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j shift+n",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide-notes/edit-active-note!)"
+  },
+  {
+    "title": "Print Speaker Notes",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j alt+n",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide-notes/print!)"
+  },
+  {
+    "title": "Toggle Speaker Notes",
+    "category": "Next-slide",
+    "key": "ctrl+alt+j ctrl+alt+n",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide-notes/toggle!)"
+  }

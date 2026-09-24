@@ -1,0 +1,21 @@
+{:paths ["scripts" "test"]
+ :tasks
+ {:requires ([babashka.cli :as cli]
+             [workshop-init])
+
+  init
+  {:doc "Install this workshop's Joyride npm deps and keybindings"
+   :task (let [opts (cli/parse-opts *command-line-args* workshop-init/cli-spec)
+               result (workshop-init/exec! opts)]
+           (workshop-init/print-result! result))}
+
+  install-user-joyride
+  {:doc "Copy Joyride sources into the user directory for every window"
+   :task (let [opts (cli/parse-opts *command-line-args* workshop-init/cli-spec)
+               result (workshop-init/install-user! opts)]
+           (workshop-init/print-user-result! result))}
+
+  test
+  {:doc "Run workshop-init tests"
+   :requires ([workshop-init-test])
+   :task (workshop-init-test/run!)}}}

@@ -1,0 +1,44 @@
+(ns ttt-flare
+  (:require
+   [joyride.flare :as flare]))
+
+(defn project-path [path]
+  (str "projects/scittle-replicant-tic-tac-toe/" path))
+
+(defn replicant-ttt [port]
+  (flare/flare!+
+   {:html [:html
+           [:head
+            [:script (str "var SCITTLE_NREPL_WEBSOCKET_PORT = " port ";
+                      var SCITTLE_NREPL_WEBSOCKET_HOST = 'localhost';")]
+            [:script {:src "https://cdn.jsdelivr.net/npm/scittle@0.8.31/dist/scittle.js"
+                      :type "application/javascript"}]
+            [:script {:src "https://cdn.jsdelivr.net/npm/scittle@0.8.31/dist/scittle.nrepl.js"
+                      :type "application/javascript"}]
+            [:script {:src "https://cdn.jsdelivr.net/npm/scittle@0.8.31/dist/scittle.replicant.js"
+                      :type "application/javascript"}]
+            [:script {:type "application/x-scittle"
+                      :src (project-path "resources/scittle/replicant_tictactoe/ui.cljs")}]
+            [:script {:type "application/x-scittle"
+                      :src (project-path "resources/scittle/replicant_tictactoe/game.cljs")}]
+            [:script {:type "application/x-scittle"
+                      :src (project-path "resources/scittle/replicant_tictactoe/core.cljs")}]
+            [:link {:rel "stylesheet"
+                    :href (project-path "resources/scittle/replicant_tictactoe/style.css")}]]
+           [:body
+            [:h1 "Scittle tic-tac-toe built with Replicant"]
+            [:ul {:style {:list-style :none
+                          :padding-left 0
+                          :display :flex
+                          :flex-direction :row
+                          :gap "0.5rem"}}
+             [:li [:a {:href "https://github.com/babashka/scittle"} "Scittle"]]
+             [:li [:a {:href "https://replicant.fun"} "Replicant"]]]
+            [:div#app]]]
+    :key :sidebar-1
+    :title "Greetings, Professor Falken."}))
+
+(comment
+  (replicant-ttt 13400)
+  (flare/close! :sidebar-1)
+  :rcf)

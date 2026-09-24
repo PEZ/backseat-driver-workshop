@@ -1,0 +1,41 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules
+
+# Clojure
+.cpcache/
+.nrepl-port
+
+# ClojureScript
+.shadow-cljs/
+.cljs_node_repl/
+compiled
+target
+dist
+build
+out
+
+# Calva
+**/.calva/output-window/
+**/.calva/repl.calva-repl
+**/.calva/mcp-server/port
+
+# clj-kondo, clojure-lsp
+**/.clj-kondo/.cache/
+**/.clj-kondo/imports/
+**/.lsp/.cache/
+
+# Portal
+**/.portal/vs-code.edn
+
+# Joyride
+**/.joyride/mcp-server/port
+
+# ECA (machine-local MCP config)
+.eca/config.json
+
+# local
+.tmp/
+.cache

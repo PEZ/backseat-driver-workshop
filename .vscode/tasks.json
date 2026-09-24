@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "shell": {
+      "executable": "sh",
+      "args": [
+        "-c"
+      ]
+    }
+  },
+  "inputs": [
+    {
+      "id": "tryClojureConnect",
+      "type": "command",
+      "command": "joyride.runCode",
+      "args": "(require '[repl-connect]) (repl-connect/connect! {:connect-sequence \"Try Clojure\"}) \"ok\""
+    },
+  ],
+  "tasks": [
+    {
+      "label": "Try Clojure repl",
+      "type": "shell",
+      "command": "clojure -Sdeps '{:deps {nrepl/nrepl {:mvn/version,\"1.5.1\"},cider/cider-nrepl {:mvn/version,\"0.58.0\"}}}' -M -m nrepl.cmdline --middleware \"[cider.nrepl/cider-middleware]\"",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never",
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^(~never~)$",
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "nREPL server started"
+        }
+      }
+    },
+    {
+      "label": "Try Clojure",
+      "dependsOn": [
+        "Try Clojure repl"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "command": "echo ${input:tryClojureConnect}",
+      "presentation": {
+        "reveal": "never",
+        "close": true,
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+  ]
+}

@@ -1,0 +1,403 @@
+/*
+  next-slide layout system
+  ========================
+
+  One surface. Two height contracts. 12th columns. Local scroll as an opt-in on a pane.
+
+  Stage  — the markdown preview width (container: stage)
+  Slide  — one presentation unit; fills the stage width
+           default = fit: one viewport frame; zooms down when stage < --slide-width
+           .center  = leftover stage height; images shrink; heading stays lead-in
+                      does not scroll. On cols-X-Y, same height contract: the
+                      pane row fills what is left; pane images shrink.
+           .scroll  = intentional overflow: presenter scrolls the slide
+  Columns — .cols-1-11 … .cols-11-1 on the slide (e.g. slide cols-5-7)
+           heading spans the full row; only .pane children are columns
+  Pane   — a column child; add .scroll for progressive disclosure inside a fit slide
+
+  Fit preserves composition (scale when narrow). Center fits the stage height
+  (images shrink). Scroll preserves long form (reflow + overflow).
+  Center + cols-X-Y is the height contract on a column slide. Do not mix
+  center or cols with .scroll on the same slide.
+
+  Window zoom: --window-zoom-factor from slide-zoom.css (written by
+  .joyride prezo.slide-zoom on workspace activate) counters workbench zoom.
+*/
+
+body:has(.slide),
+.github-markdown-body:has(.slide),
+.markdown-body:has(.slide) {
+  container-type: inline-size;
+  container-name: stage;
+  max-width: none !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Center is a preview-tall frame. 100svh is the window, not this pane. */
+html:has(.slide.center):not(:has(.slide.scroll)),
+body:has(.slide.center):not(:has(.slide.scroll)),
+.github-markdown-body:has(.slide.center):not(:has(.slide.scroll)),
+.markdown-body:has(.slide.center):not(:has(.slide.scroll)) {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Typography inside slides */
+.github-markdown-body:has(.slide),
+.markdown-body:has(.slide),
+.slide {
+  h1 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin-bottom: 0.25rem;
+    border: none;
+
+    &:not(:first-child) {
+      margin-top: 1.25rem;
+    }
+  }
+}
+
+.slide {
+  --slide-width: 900px;
+  --slide-inset: 1.25rem;
+  --accent: #ffa657;
+
+  box-sizing: border-box;
+  position: relative;
+  padding: var(--slide-inset);
+  width: 100%;
+  max-width: 100%;
+  /* Fill the stage; shrink when narrow; counter workbench window zoom. */
+  zoom: calc(min(1, 100cqw / var(--slide-width)) / var(--window-zoom-factor, 1));
+
+  &.scroll {
+    zoom: calc(1 / var(--window-zoom-factor, 1));
+    overflow-y: auto;
+    max-height: 100svh;
+
+    /* Scroll mode only: below the floor, stack panes. Fit mode keeps composition via zoom. */
+    @container stage (max-width: 36rem) {
+      --cols: 1fr;
+    }
+  }
+
+  &.title {
+    h1 {
+      font-size: clamp(2rem, 5.5cqw, 3.25rem);
+    }
+  }
+
+  /* Heading stays lead-in, like cols; only the body is centered. */
+  &.center:not(.title) {
+    justify-content: flex-start;
+
+    > h1 {
+      order: -1;
+      text-align: start;
+    }
+
+    > div.code-line:not(.pane) {
+      display: none;
+    }
+
+    &:not(:has(.hero)):not([class*=" cols-"]):not([class^="cols-"])::before,
+    &:not(:has(.hero)):not([class*=" cols-"]):not([class^="cols-"])::after {
+      content: "";
+      flex: 1 1 0;
+      min-height: 0;
+      pointer-events: none;
+    }
+  }
+
+  /* Column lead-in: flush with the pane top. */
+  .pane > h2:first-child {
+    margin-top: 0;
+  }
+
+  strong,
+  code {
+    color: var(--accent);
+  }
+
+  /* Bold links: **[text](url)** → accent + underline. */
+  strong a,
+  a strong {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+
+  /* Labeled links: *[text](url)* → white, upright, underline. */
+  em a,
+  a em {
+    color: #fff;
+    font-style: normal;
+    text-decoration: underline;
+    text-decoration-color: #fff;
+  }
+
+  /*
+    Favicons on bold/emphasis links only (all slides).
+    nowrap keeps icon + label on one line.
+    CSS cannot derive a domain from href, so each host needs a rule.
+  */
+  :is(strong, em) a[href],
+  a[href]:has(> :is(strong, em)) {
+    white-space: nowrap;
+  }
+
+  :is(strong, em) a[href]::before,
+  a[href]:has(> :is(strong, em))::before {
+    content: "";
+    display: inline-block;
+    width: 0.9em;
+    height: 0.9em;
+    margin-right: 0.3em;
+    vertical-align: -0.12em;
+    background: center / contain no-repeat;
+  }
+
+  :is(strong, em) a[href*="github.com"]::before,
+  a[href*="github.com"]:has(> :is(strong, em))::before {
+    background-image: url("https://www.google.com/s2/favicons?domain=github.com&sz=64");
+  }
+
+  :is(strong, em) a[href*="herdr.dev"]::before,
+  a[href*="herdr.dev"]:has(> :is(strong, em))::before {
+    background-image: url("https://www.google.com/s2/favicons?domain=herdr.dev&sz=64");
+  }
+
+  :is(strong, em) a[href*="x.ai"]::before,
+  a[href*="x.ai"]:has(> :is(strong, em))::before {
+    background-image: url("https://www.google.com/s2/favicons?domain=x.ai&sz=64");
+  }
+
+  :is(strong, em) a[href*="babashka.org"]::before,
+  a[href*="babashka.org"]:has(> :is(strong, em))::before {
+    background-image: url("https://www.google.com/s2/favicons?domain=book.babashka.org&sz=64");
+  }
+
+  :is(strong, em) a[href*="typesafe.ai"]::before,
+  a[href*="typesafe.ai"]:has(> :is(strong, em))::before {
+    background-image: url("https://www.google.com/s2/favicons?domain=typesafe.ai&sz=64");
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  pre,
+  pre code {
+    white-space: pre-wrap !important;
+    overflow-wrap: break-word !important;
+  }
+}
+
+/* Columns: class="slide cols-5-7". Pairings 1-11 through 11-1. */
+[class^="cols-"],
+[class*=" cols-"] {
+  display: grid;
+  grid-template-columns: var(--cols);
+  column-gap: 1rem;
+  align-items: start;
+
+  /* Heading and other lead-in stay full width; only .pane children are columns. */
+  > :not(.pane) {
+    grid-column: 1 / -1;
+  }
+
+  /* VS Code markdown preview injects empty .code-line wrappers; ignore them. */
+  > div.code-line:not(.pane) {
+    display: none;
+  }
+
+  > .pane {
+    min-width: 0;
+  }
+}
+
+.cols-1-11 { --cols: 1fr 11fr; }
+.cols-2-10 { --cols: 2fr 10fr; }
+.cols-3-9 { --cols: 3fr 9fr; }
+.cols-4-8 { --cols: 4fr 8fr; }
+.cols-5-7 { --cols: 5fr 7fr; }
+.cols-6-6 { --cols: 6fr 6fr; }
+.cols-7-5 { --cols: 7fr 5fr; }
+.cols-8-4 { --cols: 8fr 4fr; }
+.cols-9-3 { --cols: 9fr 3fr; }
+.cols-10-2 { --cols: 10fr 2fr; }
+.cols-11-1 { --cols: 11fr 1fr; }
+
+/* Pane-local scroll (progressive disclosure inside a fit slide) */
+.pane.scroll {
+  max-height: 70svh;
+  overflow-y: auto;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: sticky;
+    bottom: 0;
+    display: block;
+    height: 1.25rem;
+    margin-top: -1.25rem;
+    background: linear-gradient(to bottom, transparent, var(--vscode-editor-background));
+    pointer-events: none;
+  }
+}
+
+/* Affordances */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  /* Full-width heading box so the h1 rule spans the stage (not just the text).
+     Non-title slides start-align that heading (see .slide.center). */
+  > h1 {
+    align-self: stretch;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  > h2 {
+    flex-shrink: 0;
+  }
+
+  /* Markdown wraps images in <p>; that box is the flex child that may shrink. */
+  > p:has(img) {
+    flex: 0 1 auto;
+    min-height: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+/* Center + columns: keep the grid. Heading row is auto; pane row takes leftover
+   height (minmax 0 so images can shrink below intrinsic size). */
+[class^="cols-"].center,
+[class*=" cols-"].center {
+  display: grid;
+  text-align: start;
+  align-items: stretch;
+  justify-items: stretch;
+  grid-template-rows: auto minmax(0, 1fr);
+
+  > .pane {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  > .pane > :not(p:has(img)):not(img) {
+    flex-shrink: 0;
+  }
+
+  > .pane > p:has(img) {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  > .pane > img {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  > .pane img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  /* Markdown wraps each image in <p>; don't let that stack the row. */
+  > p {
+    display: contents;
+  }
+
+  img {
+    height: 5.5rem;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+  }
+
+  &.sm img {
+    height: 3.5rem;
+  }
+}
+
+.hero {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Markdown wraps each image in <p>; don't let that stack the row. */
+  > p {
+    display: contents;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+@media print {
+  .slide,
+  .pane.scroll {
+    overflow: visible;
+    max-height: none;
+    zoom: 1;
+  }
+}

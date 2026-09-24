@@ -1,0 +1,53 @@
+{
+	"markdown.styles": [
+		"slide-zoom.css",
+		"next-slide.css"
+	],
+	"calva.replConnectSequences": [
+		{
+			"name": "Try Clojure",
+			"projectRootPath": [
+				"."
+			],
+			"cljsType": "none",
+			"projectType": "deps.edn",
+			"menuSelections": {
+				"cljAliases": []
+			},
+			"replSessionNames": {
+				"primary": "try-clojure"
+			}
+		},
+		{
+			"name": "Scittle Tic-Tac-Toe",
+			"projectType": "scittle",
+			"webSocketPort": 13400,
+			"replSessionNames": {
+				"primary": "tic-tac-toe"
+			},
+		},
+		{
+			"name": "pirate-lang",
+			"projectType": "deps.edn",
+			"projectRootPath": [
+				"projects",
+				"pirate-lang"
+			],
+			"cljsType": "none",
+			"replSessionNames": {
+				"primary": "pirate-lang"
+			},
+			"menuSelections": {
+				"cljAliases": [
+					"allow-attach-self",
+					"dev",
+					"test"
+				]
+			}
+		},
+	],
+	"editor.hover.delay": 1500,
+	"markdown.preview.fontSize": 30,
+	"markdown.preview.markEditorSelection": false,
+	"calva.autoOpenResultOutputDestination": false
+}

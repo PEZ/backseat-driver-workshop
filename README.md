@@ -6,6 +6,8 @@ Slides and resources for the workshop.
 
 Prerequisites:
 
+An active AI subscription: Copilot and Cursor integrate most seamlessly, but any non-cloud agents will also work fine.
+
 * [VS Code](https://code.visualstudio.com/) or fork (If you haven't picked yet, I can recommend [Cursor](https://cursor.com), it's my daily driver) (Antigravity sort of works, but is a clunky with Backseat Driver)
 * [Babashka](https://github.com/babashka/babashka)
 * [Java](https://www.java.com/)

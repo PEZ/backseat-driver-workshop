@@ -115,23 +115,24 @@
 (defn edit-active-note! []
   (p/let [{:keys [slides notes->headers missing]}
           (gather-missing-notes+)
+          snap (next/slides-and-index+)
           active-document-uri (some-> vscode/window.activeTextEditor .-document .-uri)
           active-document-path (when active-document-uri
                                  (vscode/workspace.asRelativePath
                                   active-document-uri))
           active-slide (or ((set slides) active-document-path)
-                           (nth slides (:active-slide @next/!state)))
+                           (nth slides (:index snap) nil))
           active-note (string/replace active-slide #"\.md$" "-notes.md")
           missing-active-note (keep (fn [note]
                                       (when (= note active-note)
                                         note))
                                     missing)
-          active-note-uri (vscode.Uri.joinPath (next/ws-root) active-note)]
+          active-note-uri (vscode/Uri.joinPath (next/ws-root) active-note)]
     (when (seq missing-active-note)
       (log "Creating missing:" active-note)
       (create-missing-notes!+ notes->headers missing-active-note))
-    (vscode.workspace.openTextDocument active-note-uri)
-    (vscode.window.showTextDocument active-note-uri)))
+    (vscode/workspace.openTextDocument active-note-uri)
+    (vscode/window.showTextDocument active-note-uri)))
 
 (comment
   (#{"a" "b"} "a")

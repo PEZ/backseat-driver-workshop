@@ -25,5 +25,6 @@ The slides (and my styling) wants this:
 ## Get started
 
 1. Clone this repository to your computer.
-2. Say **hello** in chat. The agent will know what to do to help you get things initialized.
+1. Open in VS Code (etc)
+1. Say **hello** to your AI agent. It will know what to do to help you get things initialized.
 

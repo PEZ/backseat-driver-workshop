@@ -3,7 +3,7 @@
   ;; {
   ;;   "key": "ctrl+alt+j s",
   ;;   "command": "joyride.runCode",
-  ;;   "args": "(prezo.next-slide/activate!)"
+  ;;   "args": "(prezo.next-slide/present!)"
   ;; },
   ;; {
   ;;   "key": "ctrl+alt+j ctrl+alt+s",
@@ -52,7 +52,12 @@
   ;; {
   ;;   "key": "ctrl+alt+cmd+left",
   ;;   "command": "joyride.runCode",
-  ;;   "args": "(prezo.next-slide/restart!)"
+  ;;   "args": "(prezo.next-slide/source! false)"
+  ;; },
+  ;; {
+  ;;   "key": "ctrl+alt+cmd+right",
+  ;;   "command": "joyride.runCode",
+  ;;   "args": "(prezo.next-slide/source! true)"
   ;; },
 
 (ns prezo.next-slide
@@ -79,8 +84,10 @@
           config (edn/read-string config-text)]
     config))
 
-(defn slides-list+ []
-  (p/let [config (get-config!+ (apply path/join (:next/config-path @!state)))]
+(defn slides-list+
+  []
+  (p/let [config-path (or (:next/config-path @!state) ["slides.edn"])
+          config (get-config!+ (apply path/join config-path))]
     (:slides config)))
 
 (defn current! []
@@ -102,6 +109,53 @@
      (swap! !state update :next/active-slide next)
      (current!))
    nil))
+
+(defn- editor-rel
+  "Path of editor, relative to the workspace root."
+  [editor]
+  (when editor
+    (let [rel (path/relative (.-fsPath (ws-root))
+                             (.-fsPath (.-uri (.-document editor))))]
+      (when-not (.startsWith rel "..")
+        rel))))
+
+(defn active-slide-rel
+  "Path of the active editor, relative to the workspace root."
+  []
+  (editor-rel vscode/window.activeTextEditor))
+
+(defn slide-index
+  "Index of rel in slides, or nil."
+  [slides rel]
+  (some (fn [[idx slide]]
+          (when (= slide rel) idx))
+        (map-indexed vector slides)))
+
+(defn- preview-source-rel+
+  "Path of the markdown preview source, relative to the workspace root."
+  []
+  (p/let [editor (vscode/commands.executeCommand "markdown.showSource")]
+    (or (editor-rel editor)
+        (active-slide-rel))))
+
+(defn source!
+  "Open the previous or next slide source file."
+  [forward?]
+  (p/let [slides (slides-list+)
+          from-editor (active-slide-rel)
+          rel (if (slide-index slides from-editor)
+                from-editor
+                (preview-source-rel+))
+          idx (slide-index slides rel)]
+    (if (nil? idx)
+      (vscode/window.showWarningMessage "This file is not in the slide list")
+      (let [next-idx (if forward? (inc idx) (dec idx))
+            slide (when (and (<= 0 next-idx) (< next-idx (count slides)))
+                    (nth slides next-idx))]
+        (when slide
+          (swap! !state assoc :next/active-slide next-idx)
+          (vscode/window.showTextDocument (vscode/Uri.joinPath (ws-root) slide))))))
+  nil)
 
 (defn restart!
   []
@@ -127,6 +181,23 @@
    (vscode/window.showInformationMessage
     (str "next-slide:" "activated"))
    nil))
+
+(defn hide-panels!
+  "Close the sidebar, panel, and secondary sidebar."
+  []
+  (vscode/commands.executeCommand "workbench.action.closeSidebar")
+  (vscode/commands.executeCommand "workbench.action.closePanel")
+  (vscode/commands.executeCommand "workbench.action.closeAuxiliaryBar")
+  nil)
+
+(defn present!
+  "Activate slide mode, hide panels, and show the first slide."
+  []
+  (activate!)
+  (swap! !state assoc :next/active-slide 0)
+  (hide-panels!)
+  (current!)
+  nil)
 
 (defn get-current-slide-name+
   "Get the filename of the currently active slide (without path prefix)"

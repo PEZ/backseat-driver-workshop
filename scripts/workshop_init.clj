@@ -286,8 +286,10 @@
 
 (defn- zoom-keys []
   (if (= :mac (os-key))
-    {:in "cmd+[Minus]" :out "cmd+-" :reset "cmd+0" :restart "ctrl+alt+cmd+left"}
-    {:in "ctrl+=" :out "ctrl+-" :reset "ctrl+0" :restart "ctrl+alt+j ctrl+left"}))
+    {:in "cmd+[Minus]" :out "cmd+-" :reset "cmd+0"
+     :source-previous "ctrl+alt+cmd+left" :source-next "ctrl+alt+cmd+right"}
+    {:in "ctrl+=" :out "ctrl+-" :reset "ctrl+0"
+     :source-previous "ctrl+alt+j ctrl+left" :source-next "ctrl+alt+j ctrl+right"}))
 
 (defn- run-code
   [title category key args when]
@@ -300,9 +302,9 @@
 
 (defn keybinding-entries
   []
-  (let [{:keys [in out reset restart]} (zoom-keys)]
+  (let [{:keys [in out reset source-previous source-next]} (zoom-keys)]
     [(run-code "Activate Slide Mode" "Next-slide" "ctrl+alt+j s"
-               "(prezo.next-slide/activate!)" "workshop:open")
+               "(prezo.next-slide/present!)" "workshop:open")
      (run-code "Deactivate Slide Mode" "Next-slide" "ctrl+alt+j ctrl+alt+s"
                "(prezo.next-slide/deactivate!)" "workshop:open")
      {:title "Show Markdown Preview"
@@ -325,8 +327,10 @@
       :when "next-slide:active && !inZenMode"}
      (run-code "Show Current Slide" "Next-slide" "F5"
                "(prezo.next-slide/current!)" "next-slide:active && inZenMode")
-     (run-code "Restart Presentation" "Next-slide" restart
-               "(prezo.next-slide/restart!)" "workshop:open")
+     (run-code "Previous Slide Source" "Next-slide" source-previous
+               "(prezo.next-slide/source! false)" "workshop:open")
+     (run-code "Next Slide Source" "Next-slide" source-next
+               "(prezo.next-slide/source! true)" "workshop:open")
      (run-code "Prepare Speaker Notes" "Next-slide" "ctrl+alt+j ctrl+n"
                "(prezo.next-slide-notes/prepare!)" "workshop:open")
      (run-code "Edit Active Note" "Next-slide" "ctrl+alt+j shift+n"

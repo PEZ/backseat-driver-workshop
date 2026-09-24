@@ -3,7 +3,7 @@
     "category": "Next-slide",
     "key": "ctrl+alt+j s",
     "command": "joyride.runCode",
-    "args": "(prezo.next-slide/activate!)"
+    "args": "(prezo.next-slide/present!)"
   },
   {
     "title": "Deactivate Slide Mode",
@@ -66,11 +66,18 @@
     "when": "next-slide:active && inZenMode"
   },
   {
-    "title": "Restart Presentation",
+    "title": "Previous Slide Source",
     "category": "Next-slide",
     "key": "ctrl+alt+cmd+left",
     "command": "joyride.runCode",
-    "args": "(prezo.next-slide/restart!)"
+    "args": "(prezo.next-slide/source! false)"
+  },
+  {
+    "title": "Next Slide Source",
+    "category": "Next-slide",
+    "key": "ctrl+alt+cmd+right",
+    "command": "joyride.runCode",
+    "args": "(prezo.next-slide/source! true)"
   },
   {
     "title": "Prepare Speaker Notes",

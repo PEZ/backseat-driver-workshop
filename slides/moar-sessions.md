@@ -23,6 +23,7 @@
 ### **joyride**
 
 1. **Calva: Start Joyride REPL and Connect**
+1. Project root: `projects/scittle-replicant-tic-tac-toe`
 
 ### **tic-tac-toe** (Scittle)
 

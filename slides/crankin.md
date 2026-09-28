@@ -15,7 +15,7 @@ Built with:
 
 (Not what **Grok Bot** was designed for.)
 
-- `bb cranking-oss tasks`
+- `bb crankin-oss tasks`
 
 </div>
 <div class="pane">

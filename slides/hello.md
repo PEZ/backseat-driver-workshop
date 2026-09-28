@@ -8,4 +8,5 @@
 
 ## Clojure/conj 2026
 
+[Slides at github.com/PEZ/backseat-driver-workshop](https://github.com/PEZ/backseat-driver-workshop)
 </div>

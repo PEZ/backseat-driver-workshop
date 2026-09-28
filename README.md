@@ -13,13 +13,11 @@ An active AI subscription: Copilot and Cursor integrate most seamlessly, but any
 * [Java](https://www.java.com/)
 * [Clojure CLI](https://clojure.org/)
 * [Node.js](https://nodejs.org/)
-* [Calva](https://calva.io/)
-* [Calva Backseat Driver](https://github.com/BetterThanTomorrow/calva-backseat-driver)
-* [Joyride](https://github.com/BetterThanTomorrow/joyride)
+* [Calva](https://calva.io/) (Latest)
+* [Calva Backseat Driver](https://github.com/BetterThanTomorrow/calva-backseat-driver) (Latest)
+* [Joyride](https://github.com/BetterThanTomorrow/joyride) (Latest)
 
 The slides (and my styling) wants this:
-
-* [Markdown Preview Mermaid Support](https://github.com/mjbvz/vscode-markdown-mermaid)
 * Dark mode theme activated
 
 ## Get started

@@ -1,0 +1,30 @@
+{:tasks
+ {docker-repl
+  {:doc "Start a REPL in a Docker container (used by Calva Jack-in)"
+   :requires ([clojure.string :as string])
+   :task (let [nrepl-version   (or (System/getenv "JACK_IN_NREPL_VERSION") "1.6.0")
+               cider-version   (or (System/getenv "JACK_IN_CIDER_NREPL_VERSION") "0.58.0")
+               aliases         ":allow-attach-self:dev:test"
+               #_(some-> (System/getenv "JACK_IN_CLI_ALIASES")
+                         (string/replace "," ""))
+               middleware      (or (System/getenv "JACK_IN_CLJ_MIDDLEWARE") "[cider.nrepl/cider-middleware]")
+               sdeps (format "{:deps {nrepl/nrepl {:mvn/version,\"%s\"},cider/cider-nrepl {:mvn/version,\"%s\"}}}"
+                             nrepl-version cider-version)
+               cmd (cond-> ["docker" "compose" "run" "--rm" "--remove-orphans" "-T" "--service-ports" "repl"
+                            "clojure" "-Sdeps" sdeps]
+                     aliases (conj (str "-M" aliases))
+                     (not aliases) (conj "-M")
+                     true (into ["-m" "nrepl.cmdline"
+                                 "--middleware" middleware
+                                 "--bind" "0.0.0.0"
+                                 "--port" "7888"]))]
+           (spit ".nrepl-port" "7888")
+           (.addShutdownHook (Runtime/getRuntime)
+                             (Thread. (fn []
+                                        (-> (ProcessBuilder. ["docker" "compose" "down"])
+                                            (.inheritIO)
+                                            (.start)
+                                            (.waitFor))
+                                        (clojure.java.io/delete-file ".nrepl-port" true))))
+           (println "Running: " cmd)
+           (apply shell cmd))}}}

@@ -1,0 +1,11 @@
+services:
+  repl:
+    build: .
+    ports:
+      - "7888:7888"
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+      - ./resources:/app/resources
+      - ./env:/app/env
+      - ./deps.edn:/app/deps.edn

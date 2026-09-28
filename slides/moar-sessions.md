@@ -12,7 +12,8 @@
    1. **backend** (Clojure)
    1. **frontend** (ClojureScript)
 1. **pirate-lang** (Clojure)
-1. *Bonus*: **epupp** (Scittle as a browser extension)
+1. *Bonus*: **[epupp](https://github.com/PEZ/epupp)** (Scittle as a browser extension)
+1. *Bonus*: **pirate-lan-dockerized** (Clojure)
 
 ![REPL Sessions menu](../images/repl-sessions.png)
 
@@ -51,9 +52,34 @@ The frontend entrypoint is in [frontend/app.cljs](../projects/shadow-w-backend/s
 
 ### **pirate-lang** (Clojure)
 
-1. Open [pirate_lang.clj](../projects/pirate-lang/src/pez/pirate_lang.clj) and Jack in
+1. Open [pirate_lang.clj](../projects/pirate-lang/src/pez/pirate_lang.clj) and Jack in (project root `projects/pirate-lang`)
 
+### **pirate-lan-dockerized** (Clojure)
 
+1. Add this connect sequence:
+    ```jsonc
+        {
+            "name": "pirate-lang dockerized",
+            "projectType": "deps.edn",
+            "projectRootPath": [
+                "projects",
+                "pirate-lang"
+            ],
+            "customJackInCommandLine": "bb docker-repl",
+            "cljsType": "none",
+            "replSessionNames": {
+                "primary": "pirate-lang-docker"
+            },
+            "menuSelections": {
+                "cljAliases": [
+                    "allow-attach-self",
+                    "dev",
+                    "test"
+                ]
+            }
+        },
+    ```
+1. Jack-in, same project root, etc
 
 </div>
 

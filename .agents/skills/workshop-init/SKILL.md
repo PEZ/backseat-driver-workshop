@@ -94,6 +94,10 @@ The slide runtime is hosted in `.joyride/src/prezo` (`next_slide.cljs`, `next_sl
 3. Merges workshop keybindings into `keybindings.json`. Chords use Joyride's `ctrl+alt+j` prefix. Arrow keys, page up, page down, F5, and zoom use `when: next-slide:active`. Zoom and restart use `cmd` on macOS and `ctrl` on Windows and Linux. Util chords use `flares:active`, `pastedown:active`, or `keybinding-palette:active`. Other next-slide chords use `workshop:open`. `workspace_activate` sets those contexts. A key that is already bound is still added, with its `when` clause, and reported as a clash. Tell the human which keys clash.
 4. Removes the `<!-- BEGIN workshop-init:check -->` … `<!-- END workshop-init:check -->` section from repo `AGENTS.md` when present. Skips that edit when this folder is nested inside another git repo.
 
+## slide-zoom.css
+
+Joyride writes `slide-zoom.css` in the repo root when this window activates (`prezo.slide-zoom/sync!+` in `workspace_activate`). The file holds this machine's zoom factor for the markdown preview. Hello and init can make that file look modified. Leave the change. Keep the file out of commits.
+
 ## Every window
 
 When the human asks to install these Joyride utils for every window, run `bb install-user-joyride` with the same `--repo-root`, `--user-joyride-dir`, and `--keybindings-path` flags.

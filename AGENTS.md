@@ -6,6 +6,10 @@ This repo is a **next-slide** presentation deck: markdown slides, `slides.edn`, 
 
 Commit often. Short, plain English messages that say why.
 
+## slide-zoom.css
+
+Joyride writes `slide-zoom.css` in this folder from this window's zoom level when the workspace activates. A change to that file during hello, or later, is that write. Leave it. Keep it out of commits.
+
 <!-- BEGIN workshop-init:check -->
 ## Init check
 

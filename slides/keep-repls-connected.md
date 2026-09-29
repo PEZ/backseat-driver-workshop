@@ -6,7 +6,7 @@
 
 ## Lest the agent works REPL-less!
 
-The workshop starts **Try Clojure** on window start (and connects on reload if the nREPL is alread running). 
+The workshop starts **Try Clojure** on window start (and connects on reload if the nREPL is already running). 
 
 Here's how to do the same for **Babashka**.
 
@@ -83,7 +83,7 @@ In [tasks.json](../.vscode/tasks.json) - add to `"tasks": [`
     }
 ```
 
-**NB**: Can't get it to stop respawning? Some bug in VS Code/Cursor (sometimed) makes the background tasks, with `problemMatcher`, sticky even after removing them. Defining a non-background task of the same name clears it... 
+**NB**: Can't get it to stop respawning? Some bug in VS Code/Cursor (sometimes) makes the background tasks, with `problemMatcher`, sticky even after removing them. Defining a non-background task of the same name clears it... 
 
 ```jsonc
     {
@@ -93,7 +93,7 @@ In [tasks.json](../.vscode/tasks.json) - add to `"tasks": [`
     },
 ```
 
-... Maybe. You need to terninate the old task, run this one, type something in its terminal to make it go away, then reload the window... Then maybe.
+... Maybe. You need to terminate the old task, run this one, type something in its terminal to make it go away, then reload the window... Then maybe.
 
 </div>
 

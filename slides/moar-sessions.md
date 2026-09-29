@@ -55,7 +55,7 @@ The frontend entrypoint is in [frontend/app.cljs](../projects/shadow-w-backend/s
 
 1. Open [pirate_lang.clj](../projects/pirate-lang/src/pez/pirate_lang.clj) and Jack in (project root `projects/pirate-lang`)
 
-### **pirate-lan-dockerized** (Clojure)
+### **pirate-lang-dockerized** (Clojure)
 
 1. Add this connect sequence:
     ```jsonc

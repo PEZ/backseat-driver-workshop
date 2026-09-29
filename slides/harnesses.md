@@ -11,7 +11,7 @@
   - **Skill**: Teaches agents to do something, a folder in `skills`
 - **Agent**: A goal-oriented, **harnessed model**, with **instructions**
 - **Tools**: Structured input, producing structured output
-- **Context Window**: All **instructions**, **tool** descriptions, 
+- **Context Window**: All **instructions**, **tool** descriptions, ...
 - **MCP**: Protocol for providing **agents** with **tools** and **instructions**
 
 ![Cursor Context usage](../images/context-usage.png)

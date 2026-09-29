@@ -9,7 +9,7 @@
   - Supports parallel agent work on the same REPL
 - **List REPL sessions**
   - Sees and can target all connected REPLs
-- **Full Output Log Acces**, with history
+- **Full Output Log Access**, with history
 - **Load files**
 - **Structural Editing Tools**, with batch support
   * **Create Clojure File(s)**

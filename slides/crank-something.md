@@ -21,7 +21,7 @@
 
 *[calva#3287](https://github.com/BetterThanTomorrow/calva/issues/3287)*
 
-![Calva Issuee 3278 Output-view image display](../images/issue-calva-3278.png)
+![Calva Issuee 3287 Output-view image display](../images/issue-calva-3287.png)
 
 </div>
 

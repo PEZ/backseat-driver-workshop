@@ -4,7 +4,7 @@
 
 <div class="pane">
 
-## https://github.com/PEZ/awesome-backseat-driver
+## https://github.com/BetterThanTomorrow/awesome-backseat-driver
 
 | Plugin | Description | Contents |
 | --- | --- | --- |

@@ -39,3 +39,6 @@ out
 # local
 .tmp/
 .cache
+
+# next slide
+slide-zoom.css
